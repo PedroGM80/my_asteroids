@@ -20,3 +20,7 @@
 - For the rest of the graphics
 [Kenney](  https://opengameart.org/users/kenney)
 [Space Shooter art pac](https://opengameart.org/content/space-shooter-redux)
+ 
+ ## Graphics now
+ 
+ [Now](https://github.com/PedroGM80/my_asteroids/blob/all_changes_ok/Screenshot_1.png?raw=true)
