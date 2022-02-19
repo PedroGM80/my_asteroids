@@ -1,7 +1,4 @@
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import org.openrndr.math.Vector2
@@ -18,13 +15,13 @@ fun Vector2.angle(): Double {
 }
 
 class Game {
-    var prevTime = 0L
+    private var prevTime = 0L
     val ship = ShipData()
 
-    var targetLocation by mutableStateOf<DpOffset>(DpOffset.Zero)
+    var targetLocation by mutableStateOf(DpOffset.Zero)
 
     var gameObjects = mutableStateListOf<GameObject>()
-    var gameState by mutableStateOf(GameState.RUNNING)
+    private var gameState by mutableStateOf(GameState.RUNNING)
     var gameStatus by mutableStateOf("Let's play!")
 
     fun startGame() {
@@ -74,13 +71,12 @@ class Game {
             if (asteroid.position.distanceTo(least.position) < asteroid.size) {
                 gameObjects.remove(asteroid)
                 gameObjects.remove(least)
-
                 if (asteroid.size < 50.0) return@forEach
                 // it's still pretty big, let's spawn some smaller ones
                 repeat(2) {
-                    gameObjects.add(AsteroidData(asteroid.speed * 2,
-                        Random.nextDouble() * 360.0,
-                        asteroid.position).apply {
+                    gameObjects.add(AsteroidData(
+                        asteroid.speed * 2, Random.nextDouble() * 360.0, asteroid.position
+                    ).apply {
                         size = asteroid.size / 2
                     })
                 }
@@ -98,13 +94,14 @@ class Game {
         }
     }
 
-    fun endGame() {
+
+    private fun endGame() {
         gameObjects.remove(ship)
         gameState = GameState.STOPPED
         gameStatus = "Better luck next time!"
     }
 
-    fun winGame() {
+    private fun winGame() {
         gameState = GameState.STOPPED
         gameStatus = "Congratulations!"
     }

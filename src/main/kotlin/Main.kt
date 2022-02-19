@@ -1,6 +1,5 @@
 import androidx.compose.desktop.Window
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -22,6 +21,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 
+const val SHIP_SPEED_MAX = 15
+
 fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
 
     val game = remember { Game() }
@@ -39,6 +40,18 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
             .onKeyEvent {
                 if (it.key == Key.Spacebar) {
                     game.ship.fire(game)
+                    true
+                } else {
+                    false
+                }
+                if (it.key == Key.Z) {
+                    if (game.ship.speed >0) game.ship.speed--
+                    true
+                } else {
+                    false
+                }
+                if (it.key == Key.A) {
+                    if (game.ship.speed < SHIP_SPEED_MAX) game.ship.speed++
                     true
                 } else {
                     false
@@ -62,8 +75,8 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                 game.gameStatus,
                 modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp),
                 color = Color.White
-
             )
+
         }
         Box(
             modifier = Modifier

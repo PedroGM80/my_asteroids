@@ -8,3 +8,4 @@
 ![Screenshot of the game](dev-graphics2.png)
 
 - First change use the space bar to shoot
+- Adding controls to speed up and slow down the ship
