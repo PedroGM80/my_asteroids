@@ -47,7 +47,7 @@ class Game {
 
         val cursorVector = Vector2(targetLocation.x.value.toDouble(), targetLocation.y.value.toDouble())
         val shipToCursor = cursorVector - ship.position
-        val angle = atan2(y = shipToCursor.y, x = shipToCursor.x)
+        //val angle = atan2(y = shipToCursor.y, x = shipToCursor.x)
 
         ship.visualAngle = shipToCursor.angle()
         ship.movementVector = ship.movementVector + (shipToCursor.normalized * floatDelta.toDouble())

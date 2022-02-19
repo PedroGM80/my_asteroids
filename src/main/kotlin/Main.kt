@@ -41,16 +41,10 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                 if (it.key == Key.Spacebar) {
                     game.ship.fire(game)
                     true
-                } else {
-                    false
-                }
-                if (it.key == Key.Z) {
-                    if (game.ship.speed >0) game.ship.speed--
+                } else if (it.key == Key.Z) {
+                    if (game.ship.speed > 0) game.ship.speed--
                     true
-                } else {
-                    false
-                }
-                if (it.key == Key.A) {
+                } else if (it.key == Key.A) {
                     if (game.ship.speed < SHIP_SPEED_MAX) game.ship.speed++
                     true
                 } else {
