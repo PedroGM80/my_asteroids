@@ -23,4 +23,4 @@
  
  ## Graphics now
  
- [Now](https://github.com/PedroGM80/my_asteroids/blob/all_changes_ok/Screenshot_1.png)
+ [Now](https://raw.githubusercontent.com/PedroGM80/my_asteroids/all_changes_ok/Screenshot_1.png)
