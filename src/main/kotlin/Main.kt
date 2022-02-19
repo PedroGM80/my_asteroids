@@ -44,25 +44,25 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                         true
                     }
                     Key.Z -> {
-                        if (game.ship.speed > 0) game.ship.speed--
+                        if (game.ship.speed > 0){ game.ship.speed--}
                         true
                     }
                     Key.A -> {
-                        if (game.ship.speed < SHIP_SPEED_MAX) game.ship.speed++
+                        if (game.ship.speed < SHIP_SPEED_MAX) {game.ship.speed++}
                         true
                     }
                     else -> {
                         false
                     }
                 }
+                false
             }
             .focusRequester(requester)
             .focusable()
             .size(10.dp)
     )
-    LaunchedEffect(Unit) {
-        requester.requestFocus()
-    }
+    LaunchedEffect(Unit) { requester.requestFocus() }
+
     Column(modifier = Modifier.background(Color(51, 153, 255)).fillMaxHeight()) {
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Button({
@@ -95,10 +95,7 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                         }
                         false
                     })
-                    /**
-                    .clickable() {
-                    game.ship.fire(game)
-                    }**/
+                    //.clickable() {game.ship.fire(game)}
                     .onSizeChanged {
                         with(density) {
                             game.width = it.width.toDp()

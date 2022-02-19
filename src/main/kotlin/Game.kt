@@ -4,7 +4,8 @@ import androidx.compose.ui.unit.dp
 import org.openrndr.math.Vector2
 import kotlin.math.atan2
 import kotlin.random.Random
-
+const  val MAX_SIZE_ASTEROID=50.0
+const val MAX_BULLETS=3
 enum class GameState {
     STOPPED, RUNNING
 }
@@ -16,13 +17,13 @@ fun Vector2.angle(): Double {
 
 class Game {
     private var prevTime = 0L
-    val ship = ShipData()
-
-    var targetLocation by mutableStateOf(DpOffset.Zero)
-
-    var gameObjects = mutableStateListOf<GameObject>()
     private var gameState by mutableStateOf(GameState.RUNNING)
+
+    val ship = ShipData()
+    var targetLocation by mutableStateOf(DpOffset.Zero)
+    var gameObjects = mutableStateListOf<GameObject>()
     var gameStatus by mutableStateOf("Let's play!")
+
 
     fun startGame() {
         gameObjects.clear()
@@ -42,12 +43,12 @@ class Game {
         val delta = time - prevTime
         val floatDelta = (delta / 1E8).toFloat()
         prevTime = time
-
-        if (gameState == GameState.STOPPED) return
-
         val cursorVector = Vector2(targetLocation.x.value.toDouble(), targetLocation.y.value.toDouble())
         val shipToCursor = cursorVector - ship.position
-        //val angle = atan2(y = shipToCursor.y, x = shipToCursor.x)
+        val bullets = gameObjects.filterIsInstance<BulletData>()
+        val asteroids = gameObjects.filterIsInstance<AsteroidData>()
+
+        if (gameState == GameState.STOPPED) return
 
         ship.visualAngle = shipToCursor.angle()
         ship.movementVector = ship.movementVector + (shipToCursor.normalized * floatDelta.toDouble())
@@ -57,13 +58,10 @@ class Game {
         }
 
 
-        val bullets = gameObjects.filterIsInstance<BulletData>()
-
         // Limit number of bullets at the same time
-        if (bullets.count() > 3) {
+        if (bullets.count() > MAX_BULLETS) {
             gameObjects.remove(bullets.first())
         }
-        val asteroids = gameObjects.filterIsInstance<AsteroidData>()
 
         // Bullet <-> Asteroid interaction
         asteroids.forEach { asteroid ->
@@ -71,7 +69,7 @@ class Game {
             if (asteroid.position.distanceTo(least.position) < asteroid.size) {
                 gameObjects.remove(asteroid)
                 gameObjects.remove(least)
-                if (asteroid.size < 50.0) return@forEach
+                if (asteroid.size < MAX_SIZE_ASTEROID) return@forEach
                 // it's still pretty big, let's spawn some smaller ones
                 repeat(2) {
                     gameObjects.add(AsteroidData(
