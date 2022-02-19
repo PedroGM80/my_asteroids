@@ -38,17 +38,22 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
     Box(
         Modifier
             .onKeyEvent {
-                if (it.key == Key.Spacebar) {
-                    game.ship.fire(game)
-                    true
-                } else if (it.key == Key.Z) {
-                    if (game.ship.speed > 0) game.ship.speed--
-                    true
-                } else if (it.key == Key.A) {
-                    if (game.ship.speed < SHIP_SPEED_MAX) game.ship.speed++
-                    true
-                } else {
-                    false
+                when (it.key) {
+                    Key.Spacebar -> {
+                        game.ship.fire(game)
+                        true
+                    }
+                    Key.Z -> {
+                        if (game.ship.speed > 0) game.ship.speed--
+                        true
+                    }
+                    Key.A -> {
+                        if (game.ship.speed < SHIP_SPEED_MAX) game.ship.speed++
+                        true
+                    }
+                    else -> {
+                        false
+                    }
                 }
             }
             .focusRequester(requester)
