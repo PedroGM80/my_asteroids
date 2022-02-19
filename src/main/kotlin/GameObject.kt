@@ -40,6 +40,7 @@ sealed class GameObject(speed: Double = 0.0, angle: Double = 0.0, position: Vect
         val velocity = movementVector * realDelta.toDouble()
         obj.position += velocity
         obj.position = obj.position.mod(Vector2(game.width.value.toDouble(), game.height.value.toDouble()))
+
     }
 
     fun overlapsWith(other: GameObject): Boolean {

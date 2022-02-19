@@ -1,4 +1,5 @@
 import androidx.compose.desktop.Window
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
@@ -13,8 +14,10 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.input.pointer.pointerMoveFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpOffset
@@ -83,7 +86,13 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                 .background(Color(0, 0, 30))
                 .fillMaxWidth()
                 .fillMaxHeight()
-        ) {
+        ) {     val imageModifier = Modifier
+            Image(
+                bitmap = imageFromResource("back.png"),
+                "image",
+                imageModifier,
+                contentScale = ContentScale.FillBounds
+            )
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
