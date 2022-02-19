@@ -33,6 +33,24 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
             }
         }
     }
+    val requester = remember { FocusRequester() }
+    Box(
+        Modifier
+            .onKeyEvent {
+                if (it.key == Key.Spacebar) {
+                    game.ship.fire(game)
+                    true
+                } else {
+                    false
+                }
+            }
+            .focusRequester(requester)
+            .focusable()
+            .size(10.dp)
+    )
+    LaunchedEffect(Unit) {
+        requester.requestFocus()
+    }
     Column(modifier = Modifier.background(Color(51, 153, 255)).fillMaxHeight()) {
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Button({
@@ -65,9 +83,10 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                         }
                         false
                     })
+                    /**
                     .clickable() {
-                        game.ship.fire(game)
-                    }
+                    game.ship.fire(game)
+                    }**/
                     .onSizeChanged {
                         with(density) {
                             game.width = it.width.toDp()
