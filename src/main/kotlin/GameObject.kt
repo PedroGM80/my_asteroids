@@ -8,6 +8,8 @@ class ShipData : GameObject() {
     override var size: Double = 40.0
     var visualAngle: Double = 0.0
     fun fire(game: Game) {
+        val shot=Sound("src/main/resources/LaserShot.wav",0)
+        shot.play()
         val ship = this
         game.gameObjects.add(BulletData(ship.speed * 4.0, ship.visualAngle, ship.position))
     }

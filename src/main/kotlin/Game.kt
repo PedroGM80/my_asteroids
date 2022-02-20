@@ -1,11 +1,20 @@
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.imageFromResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import org.openrndr.math.Vector2
+import kotlin.concurrent.thread
 import kotlin.math.atan2
 import kotlin.random.Random
-const  val MAX_SIZE_ASTEROID=50.0
-const val MAX_BULLETS=3
+
+const val MAX_SIZE_ASTEROID = 50.0
+const val MAX_BULLETS = 3
+
 enum class GameState {
     STOPPED, RUNNING
 }
@@ -26,6 +35,7 @@ class Game {
 
 
     fun startGame() {
+        ship.size = 40.0
         gameObjects.clear()
         ship.position = Vector2(width.value / 2.0, height.value / 2.0)
         ship.movementVector = Vector2.ZERO
@@ -48,7 +58,10 @@ class Game {
         val bullets = gameObjects.filterIsInstance<BulletData>()
         val asteroids = gameObjects.filterIsInstance<AsteroidData>()
 
-        if (gameState == GameState.STOPPED) return
+        if (gameState == GameState.STOPPED) {
+            //gameObjects.remove(ship)
+            return
+        }
 
         ship.visualAngle = shipToCursor.angle()
         ship.movementVector = ship.movementVector + (shipToCursor.normalized * floatDelta.toDouble())
@@ -94,7 +107,14 @@ class Game {
 
 
     private fun endGame() {
-        gameObjects.remove(ship)
+        //Defeult suze 40
+        val preSize = ship.size
+        val explote = Sound("C:\\Users\\pedro\\IdeaProjects\\my_asteroids\\src\\main\\resources\\explosion.wav", 0)
+        ship.size = 51.0
+        explote.play()
+        //gameObjects.remove(ship)
+        //ship.size=preSize
+        print(preSize)
         gameState = GameState.STOPPED
         gameStatus = "Better luck next time!"
     }

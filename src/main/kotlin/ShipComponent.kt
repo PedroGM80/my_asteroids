@@ -12,14 +12,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.isSpecified
 
 @Composable
 fun Ship(shipData: ShipData) {
     val shipSize = shipData.size.dp
+    var nave:Any
+
+    val imageModifier = Modifier
     Box(
         Modifier
             .offset(shipData.xOffset, shipData.yOffset)
@@ -28,13 +33,14 @@ fun Ship(shipData: ShipData) {
             .clip(CircleShape)
             .background(Color.Transparent)
     ) {
-        val imageModifier = Modifier
-            .clip(RoundedCornerShape(12.dp))
-        Image(
-            bitmap = imageFromResource("player.png"),
-            "image",
-            imageModifier,
-            contentScale = ContentScale.Fit
-        )
+        if(shipSize.value>50){ nave=imageFromResource("ex.png")}else {
+            nave= imageFromResource("player.png")}
+            Image(
+                bitmap = nave as ImageBitmap,
+                "image",
+                imageModifier,
+                contentScale = ContentScale.Fit
+            )
+        }
+
     }
-}
