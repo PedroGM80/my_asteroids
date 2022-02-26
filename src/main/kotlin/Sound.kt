@@ -14,7 +14,7 @@ class Sound(thePath: String, val numberLoop: Int) {
     var clip: Clip
 
     // get the clip status
-    var thestatus: String? = null
+    var theStatus: String? = null
     var audioStream: AudioInputStream
 
     // operation is now as per the user's choice
@@ -44,24 +44,24 @@ class Sound(thePath: String, val numberLoop: Int) {
             clip.loop(this.numberLoop)
         }
         clip.start()
-        thestatus = "play"
+        theStatus = "play"
     }
 
     // Pause audio
     fun pause() {
-        if (thestatus == "paused") {
+        if (theStatus == "paused") {
             println("audio is already paused")
             return
         }
         nowFrame = clip.microsecondPosition
         clip.stop()
-        thestatus = "paused"
+        theStatus = "paused"
     }
 
     // resume audio
     @Throws(UnsupportedAudioFileException::class, IOException::class, LineUnavailableException::class)
     fun resumeAudio() {
-        if (thestatus == "play") {
+        if (theStatus == "play") {
             println(
                 "The audio is" +
                         "being played"
@@ -123,8 +123,8 @@ class Sound(thePath: String, val numberLoop: Int) {
         fun main(args: Array<String>) {
             try {
                 //add the path to the audio file
-                val Path = "src/main/resources/LaserShot.wav"
-                val simpleSoundPlayer = Sound(Path, 0)
+                val thePath = "src/main/resources/LaserShot.wav"
+                val simpleSoundPlayer = Sound(thePath, 0)
                 simpleSoundPlayer.play()
                 val scanned = Scanner(System.`in`)
 

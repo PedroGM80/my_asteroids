@@ -44,21 +44,15 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                 when (it.key) {
                     Key.Spacebar -> {
                         game.ship.fire(game)
-                        true
                     }
                     Key.Z -> {
                         if (game.ship.speed > 0){ game.ship.speed--}
-                        true
                     }
                     Key.A -> {
                         if (game.ship.speed < SHIP_SPEED_MAX) {game.ship.speed++}
-                        true
-                    }
-                    else -> {
-                        false
                     }
                 }
-                false
+                true
             }
             .focusRequester(requester)
             .focusable()
@@ -74,11 +68,10 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                 Text("Play")
             }
             Text(
-                game.gameStatus,
+                game.gameStatus+"   Score: "+game.score+"   Speed: "+game.ship.speed.toInt()+"%   Live: "+game.ship.energy+"%",
                 modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp),
                 color = Color.White
             )
-
         }
         Box(
             modifier = Modifier

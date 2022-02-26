@@ -4,7 +4,8 @@ import androidx.compose.runtime.setValue
 import org.openrndr.math.Vector2
 import org.openrndr.math.mod
 
-class ShipData : GameObject() {
+class ShipData(override var frames: MutableList<String>, override var speedFrames: Float) : GameObject() ,Animable{
+    var energy=100
     override var size: Double = 40.0
     var visualAngle: Double = 0.0
     fun fire(game: Game) {
