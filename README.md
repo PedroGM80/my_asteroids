@@ -13,6 +13,10 @@
 - First change use the space bar to shoot
 - Adding controls to speed up and slow down the ship
 - Added graphics from opengameart.org artists
+- Added points
+- Added energy
+- Added interface Animable
+- Added animatios rocket
 
 - For the background:
 [Westbeam](https://opengameart.org/content/space-background-1#:~:text=Author%3A%C2%A0-,Westbeam,-Sunday%2C%20April%2014)
@@ -23,4 +27,4 @@
  
  ## Graphics now
  
-![Now](https://raw.githubusercontent.com/PedroGM80/my_asteroids/all_changes_ok/Screenshot_1.png)
+![Now](https://github.com/PedroGM80/my_asteroids/blob/The_end_/demo.png?raw=true)
