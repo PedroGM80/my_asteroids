@@ -1,24 +1,53 @@
+import androidx.compose.animation.Animatable
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.runtime.Composable
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.imageFromResource
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import java.util.*
+import kotlin.random.Random.Default.nextInt
 
 @Composable
 fun Asteroid(asteroidData: AsteroidData) {
     val asteroidSize = asteroidData.size.dp
+    val infiniteTransition = rememberInfiniteTransition()
+    var n = Math.random() * 1000 + 800
+    val angle by infiniteTransition.animateFloat(
+        initialValue = 0F,
+        targetValue = 360F,
+        animationSpec = infiniteRepeatable(
+            animation = tween(n.toInt(), easing = LinearEasing)
+        )
+    )
     Box(
         Modifier
             .offset(asteroidData.xOffset, asteroidData.yOffset)
             .size(asteroidSize)
-            .rotate(asteroidData.angle.toFloat())
+            .rotate(angle.toFloat())
+            //.rotate(asteroidData.angle.toFloat())
             .clip(CircleShape)
-            .background(Color(102, 102, 153))
-    )
+            .background(Color.Transparent)
+
+    ) {
+        val imageModifier = Modifier
+        Image(
+            bitmap = imageFromResource("meteorBig.png"),
+            "image",
+            imageModifier,
+            contentScale = ContentScale.FillHeight,
+        )
+    }
 }
+
+
