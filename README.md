@@ -9,9 +9,6 @@
 
 - First change use the spacebar to shoot
 - Adding controls to speed up and slow down the ship
-
-- First change use the spacebar to shoot
-- Adding controls to speed up and slow down the ship
 - Added graphics from opengameart.org artists
 - Added points
 - Added energy
