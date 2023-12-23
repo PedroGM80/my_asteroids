@@ -28,7 +28,7 @@ fun Bullet(bulletData: BulletData) {
         val imageModifier = Modifier
             .clip(RoundedCornerShape(12.dp))
         Image(
-            bitmap = imageFromResource("laserRedShot.png"),
+            bitmap = imageFromResource("img/laserRedShot.png"),
             "image",
             imageModifier,
             contentScale = ContentScale.Fit

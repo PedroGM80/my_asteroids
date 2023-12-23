@@ -44,6 +44,7 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                 when (it.key) {
                     Key.Spacebar -> {
                         game.ship.fire(game)
+                        game.ship.boom()
                         true
                     }
                     Key.Z -> {
@@ -67,14 +68,16 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
     LaunchedEffect(Unit) { requester.requestFocus() }
 
     Column(modifier = Modifier.background(Color(51, 153, 255)).fillMaxHeight()) {
-        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+        Row(modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+
             Button({
                 game.startGame()
             }) {
                 Text("Play")
             }
             Text(
-                game.gameStatus,
+                game.gameStatus+"   Speed: "+game.ship.speed.toInt()+"%   Live: "+game.ship.energy+"%",
                 modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp),
                 color = Color.White
             )
@@ -88,7 +91,7 @@ fun main() = Window(size = IntSize(800, 900), title = "Asteroids for Desktop") {
                 .fillMaxHeight()
         ) {     val imageModifier = Modifier
             Image(
-                bitmap = imageFromResource("back.png"),
+                bitmap = imageFromResource("img/back.png"),
                 "image",
                 imageModifier,
                 contentScale = ContentScale.FillBounds

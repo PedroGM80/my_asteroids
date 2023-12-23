@@ -1,23 +1,14 @@
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.imageFromResource
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import org.openrndr.math.Vector2
-import kotlin.concurrent.thread
 import kotlin.math.atan2
 import kotlin.random.Random
 
 const val MAX_SIZE_ASTEROID = 50.0
 const val MAX_BULLETS = 3
 
-enum class GameState {
-    STOPPED, RUNNING
-}
+enum class GameState { STOPPED, RUNNING }
 
 fun Vector2.angle(): Double {
     val rawAngle = atan2(y = this.y, x = this.x)
@@ -27,8 +18,9 @@ fun Vector2.angle(): Double {
 class Game {
     private var prevTime = 0L
     private var gameState by mutableStateOf(GameState.RUNNING)
-
-    val ship = ShipData()
+    var sourceAnimation=mutableListOf("animtedImg/sprite0_0.png","animtedImg/sprite0_1.png","animtedImg/sprite0_2.png",
+        "animtedImg/sprite0_3.png","animtedImg/sprite0_4.png","animtedImg/sprite0_5.png","animtedImg/sprite0_6.png")
+    val ship = ShipData(sourceAnimation,1.0F,"img/player.png",sourceAnimation,"img/ex.png")
     var targetLocation by mutableStateOf(DpOffset.Zero)
     var gameObjects = mutableStateListOf<GameObject>()
     var gameStatus by mutableStateOf("Let's play!")
@@ -57,7 +49,6 @@ class Game {
         val shipToCursor = cursorVector - ship.position
         val bullets = gameObjects.filterIsInstance<BulletData>()
         val asteroids = gameObjects.filterIsInstance<AsteroidData>()
-
         if (gameState == GameState.STOPPED) {
             //gameObjects.remove(ship)
             return
@@ -96,7 +87,12 @@ class Game {
 
         // Asteroid <-> Ship interaction
         if (asteroids.any { asteroid -> ship.overlapsWith(asteroid) }) {
-            endGame()
+            val least = asteroids.firstOrNull { it.overlapsWith(ship) } ?: return
+            ship.energy--
+            print(ship.energy)
+            if(ship.energy<99) {
+                endGame()
+            }
         }
 
         // Win condition
@@ -109,8 +105,7 @@ class Game {
     private fun endGame() {
         //Defeult suze 40
         val preSize = ship.size
-        val explote = Sound("C:\\Users\\pedro\\IdeaProjects\\my_asteroids\\src\\main\\resources\\explosion.wav", 0)
-        ship.size = 51.0
+        val explote = Sound("src/main/resources/sound/explosion.wav", 0)
         explote.play()
         //gameObjects.remove(ship)
         //ship.size=preSize

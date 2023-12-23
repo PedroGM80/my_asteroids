@@ -1,12 +1,8 @@
-import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,8 +11,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.imageFromResource
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import java.util.*
-import kotlin.random.Random.Default.nextInt
 
 @Composable
 fun Asteroid(asteroidData: AsteroidData) {
@@ -42,7 +36,7 @@ fun Asteroid(asteroidData: AsteroidData) {
     ) {
         val imageModifier = Modifier
         Image(
-            bitmap = imageFromResource("meteorBig.png"),
+            bitmap = imageFromResource("img/meteorBig.png"),
             "image",
             imageModifier,
             contentScale = ContentScale.FillHeight,

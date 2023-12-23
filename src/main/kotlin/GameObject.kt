@@ -4,14 +4,43 @@ import androidx.compose.runtime.setValue
 import org.openrndr.math.Vector2
 import org.openrndr.math.mod
 
-class ShipData : GameObject() {
+
+class ShipData(
+
+    override var frames: MutableList<String>,
+    override var speedFrames: Float,
+    override var imageIndex: String, override var beforeframes: MutableList<String>, override var extraImage: String
+) : GameObject(), Animable {
+    var energy: Int = 100
     override var size: Double = 40.0
     var visualAngle: Double = 0.0
     fun fire(game: Game) {
-        val shot=Sound("src/main/resources/LaserShot.wav",0)
+        val shot = Sound("src/main/resources/sound/LaserShot.wav", 0)
         shot.play()
         val ship = this
         game.gameObjects.add(BulletData(ship.speed * 4.0, ship.visualAngle, ship.position))
+    }
+
+    override fun play() {
+        speedFrames = 1.1F
+        frames = beforeframes
+
+    }
+
+    override fun boom() {
+        speedFrames = 0.1F
+        frames = mutableListOf(extraImage)
+    }
+
+    override fun stop() {
+        speedFrames = 0.1F
+        frames = mutableListOf(imageIndex)
+
+    }
+
+    override fun pause() {
+        speedFrames = 0.1F
+        frames = mutableListOf(beforeframes[0])
     }
 }
 
