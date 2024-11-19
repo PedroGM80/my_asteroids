@@ -32,6 +32,70 @@ https://claude.site/artifacts/5153259b-e69b-4840-a4e9-4974813c92da
 
 https://claude.site/artifacts/924a0201-378b-42f7-839a-40b4a5b5650c
 
+
+
+
+
+import android.content.Context
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothProfile
+
+class BluetoothAudioHelper(private val context: Context) {
+    private val audioManager: AudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+
+    fun connectAudioDevice(audioDevice: AudioDeviceInfo?) {
+        audioDevice?.let {
+            when (it.type) {
+                AudioDeviceInfo.TYPE_BLUETOOTH_SCO -> {
+                    audioManager.isBluetoothScoOn = true
+                    audioManager.startBluetoothSco()
+                }
+                AudioDeviceInfo.TYPE_BLUETOOTH_A2DP -> {
+                    bluetoothAdapter?.takeIf { it.isEnabled }?.getProfileProxy(context, object : BluetoothProfile.ServiceListener {
+                        override fun onServiceConnected(profile: Int, proxy: BluetoothProfile) {
+                            if (profile == BluetoothProfile.A2DP) {
+                                audioManager.isBluetoothA2dpOn = true
+                                // Manejar la conexión de A2DP
+                            }
+                        }
+
+                        override fun onServiceDisconnected(profile: Int) {
+                            if (profile == BluetoothProfile.A2DP) {
+                                audioManager.isBluetoothA2dpOn = false
+                            }
+                        }
+                    }, BluetoothProfile.A2DP)
+                }
+                else -> {
+                    // Manejar otros tipos de dispositivos de audio si es necesario
+                }
+            }
+        }
+    }
+
+    fun disableAudioDevice(audioDevice: AudioDeviceInfo?) {
+        audioDevice?.let {
+            when (it.type) {
+                AudioDeviceInfo.TYPE_BLUETOOTH_SCO -> {
+                    audioManager.stopBluetoothSco()
+                    audioManager.isBluetoothScoOn = false
+                }
+                AudioDeviceInfo.TYPE_BLUETOOTH_A2DP -> {
+                    audioManager.isBluetoothA2dpOn = false
+                    // Desconectar el dispositivo A2DP si es necesario
+                }
+                else -> {
+                    // Manejar otros tipos de dispositivos de audio si es necesario
+                }
+            }
+        }
+    }
+}
+
+
 https://claude.site/artifacts/0e0169af-7385-4de5-914b-543c7e6d3ad0
 
 https://claude.site/artifacts/8531a18b-8925-4f11-a46e-cb00fb747a80
