@@ -94,6 +94,112 @@ class BluetoothAudioHelper(private val context: Context) {
         }
     }
 }
+_____________________________
+
+
+import android.content.Context
+import android.media.AudioDeviceInfo
+import android.media.AudioManager
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothProfile
+import android.os.Build
+
+class BluetoothAudioHelper(private val context: Context) {
+    private val audioManager: AudioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    private val bluetoothAdapter: BluetoothAdapter? = BluetoothAdapter.getDefaultAdapter()
+
+    fun connectAudioDevice(audioDevice: AudioDeviceInfo?) {
+        if (audioDevice != null) {
+            when (audioDevice.type) {
+                AudioDeviceInfo.TYPE_BLUETOOTH_SCO -> {
+                    audioManager.isBluetoothScoOn = true
+                    audioManager.startBluetoothSco()
+                }
+                AudioDeviceInfo.TYPE_BLUETOOTH_A2DP -> {
+                    connectA2DP()
+                }
+                else -> {
+                    // Manejar otros tipos de dispositivos de audio si es necesario
+                }
+            }
+        } else {
+            // Verificar versiones anteriores
+            bluetoothAdapter?.bondedDevices?.forEach { device ->
+                if (isBluetoothAudioDevice(device)) {
+                    connectSCOOrA2DP(device)
+                }
+            }
+        }
+    }
+
+    private fun isBluetoothAudioDevice(device: BluetoothDevice): Boolean {
+        val deviceClass = device.bluetoothClass.deviceClass
+        return deviceClass == BluetoothClass.Device.AUDIO_VIDEO_HANDSFREE || 
+               deviceClass == BluetoothClass.Device.AUDIO_VIDEO_HEADPHONES
+    }
+
+    private fun connectSCOOrA2DP(device: BluetoothDevice) {
+        bluetoothAdapter?.getProfileProxy(context, object : BluetoothProfile.ServiceListener {
+            override fun onServiceConnected(profile: Int, proxy: BluetoothProfile) {
+                when (profile) {
+                    BluetoothProfile.HEADSET -> {
+                        audioManager.isBluetoothScoOn = true
+                        audioManager.startBluetoothSco()
+                    }
+                    BluetoothProfile.A2DP -> {
+                        audioManager.isBluetoothA2dpOn = true
+                    }
+                }
+            }
+
+            override fun onServiceDisconnected(profile: Int) {
+                when (profile) {
+                    BluetoothProfile.HEADSET -> {
+                        audioManager.stopBluetoothSco()
+                        audioManager.isBluetoothScoOn = false
+                    }
+                    BluetoothProfile.A2DP -> {
+                        audioManager.isBluetoothA2dpOn = false
+                    }
+                }
+            }
+        }, BluetoothProfile.HEADSET)
+    }
+
+    fun disableAudioDevice(audioDevice: AudioDeviceInfo?) {
+        if (audioDevice != null) {
+            when (audioDevice.type) {
+                AudioDeviceInfo.TYPE_BLUETOOTH_SCO -> {
+                    audioManager.stopBluetoothSco()
+                    audioManager.isBluetoothScoOn = false
+                }
+                AudioDeviceInfo.TYPE_BLUETOOTH_A2DP -> {
+                    audioManager.isBluetoothA2dpOn = false
+                }
+                else -> {
+                    // Manejar otros tipos de dispositivos de audio si es necesario
+                }
+            }
+        }
+    }
+
+    private fun connectA2DP() {
+        bluetoothAdapter?.takeIf { it.isEnabled }?.getProfileProxy(context, object : BluetoothProfile.ServiceListener {
+            override fun onServiceConnected(profile: Int, proxy: BluetoothProfile) {
+                if (profile == BluetoothProfile.A2DP) {
+                    audioManager.isBluetoothA2dpOn = true
+                }
+            }
+
+            override fun onServiceDisconnected(profile: Int) {
+                if (profile == BluetoothProfile.A2DP) {
+                    audioManager.isBluetoothA2dpOn = false
+                }
+            }
+        }, BluetoothProfile.A2DP)
+    }
+}
 
 
 https://claude.site/artifacts/0e0169af-7385-4de5-914b-543c7e6d3ad0
