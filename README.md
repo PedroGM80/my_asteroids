@@ -200,17 +200,3 @@ class BluetoothAudioHelper(private val context: Context) {
         }, BluetoothProfile.A2DP)
     }
 }
-
-
-https://claude.site/artifacts/0e0169af-7385-4de5-914b-543c7e6d3ad0
-
-https://claude.site/artifacts/8531a18b-8925-4f11-a46e-cb00fb747a80
-
-
-https://claude.site/artifacts/4e7997f1-aa1f-4715-a2f3-0d6caa45dd64
-
-
-https://claude.site/artifacts/b29cec09-40e4-4633-8ad2-d8b8aed3cb2c
-
-
-https://claude.site/artifacts/0a9dcdc4-d1c9-4a8b-838b-ad03bb531c97
